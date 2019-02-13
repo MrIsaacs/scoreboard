@@ -15,18 +15,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/welcome', function () {
-    return view('welcome');
-});
-
-
 Route::get('/list');
 
 Route::namespace('Api')->group(function () {
     // Controllers Within The "App\Http\Controllers\Admin" Namespace
     Route::prefix('api/v1')->group(function () {
-        #Route::post('coins/create', 'CoinsController@create');
-        $controllers = ['characters','games', 'matches'];
+        $controllers = ['graphs'];
 
         foreach ($controllers as $controller) {
             // this is new and may be not working properly

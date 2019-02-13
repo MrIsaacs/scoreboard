@@ -3,17 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Http\Controllers\Repositories\GraphRepository;
+use App\Model\Dto\Graph\GraphCreateCommand;
 use Illuminate\Http\Request;
-use App\Model\Dto\Character\CharacterCreateCommand;
-use App\Model\Dto\Character\CharacterDeleteCommand;
-use App\Model\Dto\Character\CharacterUpdateCommand;
-use App\Http\Controllers\Repositories\CharacterRepository;
 
 /**
  * Class CharactersController
  * @package App\Http\Controllers\Api
  */
-class CharactersController extends AbstractBasicController
+class GraphsController extends AbstractBasicController
 {
     /**
      * Before Initialize
@@ -21,10 +19,23 @@ class CharactersController extends AbstractBasicController
      */
     public function beforeInit()
     {
-        $this->repository = new CharacterRepository();
-        $this->createCommand = new CharacterCreateCommand();
-        $this->deleteCommand = new CharacterDeleteCommand();
-        $this->updateCommand = new CharacterUpdateCommand();
+        $this->repository = new GraphRepository();
+        $this->createCommand = new GraphCreateCommand();
+    }
+
+    /**
+     * Create Method
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse|object
+     */
+    public function create(Request $request)
+    {
+        $createCommand = $this->createCommand;
+        $createCommand->fill($request->all());
+
+        return $this->repository->commandCreate($createCommand);
     }
 
 
@@ -32,7 +43,7 @@ class CharactersController extends AbstractBasicController
      * Filter by Id
      *
      * @param Request $request
-     * 
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function filterById(Request $request)
